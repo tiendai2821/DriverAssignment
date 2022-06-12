@@ -1,0 +1,40 @@
+package service;
+
+import entity.Driver;
+import entity.Route;
+import main.MainRun;
+import util.file.FileUtil;
+
+import java.util.Scanner;
+
+public class RouteService {
+    public void addRoute(){
+        if(MainRun.routeList.isEmpty()){
+            Route.setMaTuyenLast(99);
+        }else {
+            Route.setMaTuyenLast(MainRun.routeList.get(MainRun.routeList.size()-1).getMaTuyen());
+        }
+        int numRoute;
+        System.out.println("Nhập số lượng tuyến muốn thêm: ");
+        while(true){
+            try{
+                numRoute = Integer.parseInt(new Scanner(System.in).next());
+                break;
+            }catch(NumberFormatException e){
+                System.out.println("Chỉ nhập số, mời nhập lại số lượng tuyến: ");
+            }
+        }
+        for(int i = 0 ; i<numRoute; i++){
+            Route route = new Route();
+            route.inputInfo();
+            MainRun.routeList.add(route);
+        }
+        FileUtil fileUtil = new FileUtil();
+        fileUtil.writeDataToFile(MainRun.routeList,MainRun.routeFile);
+    }
+    public void showRouteTable(){
+        for(Route r:MainRun.routeList){
+            System.out.println(r);
+        }
+    }
+}
